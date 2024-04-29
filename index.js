@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const { ObjectId } = require("mongodb");
+
 require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const app = express();
@@ -27,7 +29,16 @@ async function run() {
     const touristSpotDB = client.db("touristSpotDB").collection("touristSpot");
 
     app.get("/touristSpot", async (req, res) => {
+      // console.log(req.params.email);
       const cursor = touristSpotDB.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/touristSpot/:email", async (req, res) => {
+      const cursor = touristSpotDB.find({
+        userEmail: req.params.email,
+      });
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -39,8 +50,26 @@ async function run() {
       res.send(result);
     });
 
-    // app.delete("/")
-    // Send a ping to confirm a successful connection
+    // app.delete("/touristSpot/:id", async (req, res) => {
+    //   const result = await touristSpotDB.deleteOne({
+    //     // _id: new ObjectId(req.params.id),
+    //     _id: req.params.id,
+    //   });
+    //   console.log(result);
+    //   res.send(result);
+    // });
+    app.delete("/touristSpot/:id", async (req, res) => {
+      // const result = await touristSpotDB.deleteOne({
+      //   // _id: new ObjectId(req.params.id),
+      //   // // _id: req.params.id,
+
+      // });
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await touristSpotDB.deleteOne(query);
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
