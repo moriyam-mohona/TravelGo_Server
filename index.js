@@ -29,7 +29,6 @@ async function run() {
     const touristSpotDB = client.db("touristSpotDB").collection("touristSpot");
 
     app.get("/touristSpot", async (req, res) => {
-      // console.log(req.params.email);
       const cursor = touristSpotDB.find();
       const result = await cursor.toArray();
       res.send(result);
@@ -42,6 +41,42 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.get("/touristSpot/:id", async (req, res) => {
+      const cursor = touristSpotDB.findOne({
+        _id: new ObjectId(req.params.id),
+      });
+      console.log(_id);
+      const result = await cursor.toArray();
+      console.log(result);
+      res.send(result);
+    });
+    // app.get("/touristSpot/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await touristSpotDB.findOne(query);
+    //   console.log(result);
+    //   res.send(result);
+    // });
+    app.put("/updateSpot/:id", async (req, res) => {
+      console.log(req.params.id);
+      const query = { _id: new ObjectId(req.params.id) };
+      const data = {
+        $set: {
+          image: req.body.image,
+          touristsSpotName: req.body.touristsSpotName,
+          countryName: req.body.countryName,
+          location: req.body.location,
+          shortDescription: req.body.shortDescription,
+          averageCost: req.body.averageCost,
+          seasonality: req.body.seasonality,
+          travelTime: req.body.travelTime,
+          totalVisitorsPerYear: req.body.totalVisitors,
+        },
+      };
+      const result = await touristSpotDB.updateOne(query, data);
+      console.log(result);
+      res.send(result);
+    });
 
     app.post("/touristSpot", async (req, res) => {
       const newTouristSpot = req.body;
@@ -50,20 +85,7 @@ async function run() {
       res.send(result);
     });
 
-    // app.delete("/touristSpot/:id", async (req, res) => {
-    //   const result = await touristSpotDB.deleteOne({
-    //     // _id: new ObjectId(req.params.id),
-    //     _id: req.params.id,
-    //   });
-    //   console.log(result);
-    //   res.send(result);
-    // });
     app.delete("/touristSpot/:id", async (req, res) => {
-      // const result = await touristSpotDB.deleteOne({
-      //   // _id: new ObjectId(req.params.id),
-      //   // // _id: req.params.id,
-
-      // });
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await touristSpotDB.deleteOne(query);
