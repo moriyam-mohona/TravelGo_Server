@@ -22,7 +22,16 @@ router.get("/touristSpot/byEmail/:email", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
+router.get("/touristSpot/byCountry/:countryName", async (req, res) => {
+  const countryName = req.params.countryName;
+  try {
+    const touristSpots = await TouristSpot.find({ countryName: countryName });
+    res.json(touristSpots);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 router.get("/touristSpot/byId/:id", async (req, res) => {
   const id = req.params.id;
   try {
