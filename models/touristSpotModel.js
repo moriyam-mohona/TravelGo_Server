@@ -23,7 +23,7 @@ const touristSpotSchema = new mongoose.Schema({
     required: true,
   },
   averageCost: {
-    type: String,
+    type: Number,
     required: true,
   },
   seasonality: {
