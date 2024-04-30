@@ -9,11 +9,19 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 // middlewares
+// app.use(
+//   cors({
+//     origin: true, // Allow requests from any origin
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: true, // Allow requests from any origin
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
+    origin: [
+      "https://tourism-management-59876.web.app",
+      "http://localhost:5173",
+    ],
   })
 );
 app.use(morgan("dev"));
