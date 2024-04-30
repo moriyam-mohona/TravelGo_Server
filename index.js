@@ -50,13 +50,7 @@ async function run() {
       console.log(result);
       res.send(result);
     });
-    // app.get("/touristSpot/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await touristSpotDB.findOne(query);
-    //   console.log(result);
-    //   res.send(result);
-    // });
+
     app.put("/updateSpot/:id", async (req, res) => {
       console.log(req.params.id);
       const query = { _id: new ObjectId(req.params.id) };
